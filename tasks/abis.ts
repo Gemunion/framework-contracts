@@ -102,7 +102,7 @@ export enum ContractEventSignatures {
   ReferralProgram = "ReferralProgram((uint256,uint256,uint8,bool))",
   ReferralReward = "ReferralReward(address,address,uint8,address,uint256)",
   ReferralWithdraw = "ReferralWithdraw(address,address,uint256)",
-  VestingDeployed = "VestingDeployed(address,uint256,(address,uint64,uint16,uint16),(uint8,address,uint256,uint256)[])",
+  VestingDeployed = "VestingDeployed(address,uint256,(address,uint64,uint16,uint16))",
   ERC20TokenDeployed = "ERC20TokenDeployed(address,uint256,(string,string,uint256,string))",
   ERC721TokenDeployed = "ERC721TokenDeployed(address,uint256,(string,string,uint96,string,string))",
   ERC998TokenDeployed = "ERC998TokenDeployed(address,uint256,(string,string,uint96,string,string))",

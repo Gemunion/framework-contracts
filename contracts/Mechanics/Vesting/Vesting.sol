@@ -19,7 +19,7 @@ import { Asset, TokenType, AllowedTokenTypes } from "../../Exchange/lib/interfac
  * @dev Basic preset of Vesting contract that includes the following extensions:
  *      - Ownable (OpenZeppelin)
  *      - VestingWallet (OpenZeppelin)
- *      - TopUp (Gemunion)
+ *      - TopUp (EthBerry)
  *      This contract abstracts all common functions and is used as an foundation for other vesting contracts
  */
 contract Vesting is VestingWallet, NativeRejector, CoinHolder, TopUp {
@@ -60,7 +60,7 @@ contract Vesting is VestingWallet, NativeRejector, CoinHolder, TopUp {
 
   /**
    * @notice No tipping!
-   * @dev Rejects any incoming ETH transfers
+   * @dev Rejects any incoming ETH transfers. Use TopUp instead
    */
   receive() external payable virtual override(VestingWallet, NativeRejector) {
     revert PaymentRejected(_msgSender(), msg.value);
