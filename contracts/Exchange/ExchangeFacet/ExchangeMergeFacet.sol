@@ -46,12 +46,14 @@ contract ExchangeMergeFacet is IMergeErrors, SignatureValidator, DiamondOverride
         revert MergeDifferentContracts();
       }
 
-      // check for token existence with correct metadata
-      uint256 templateId = IERC721GeneralizedCollection(el.token).getRecordFieldValue(el.tokenId, TEMPLATE_ID);
+      if (expectedId != 0) {
+        // check for token existence with correct metadata
+        uint256 templateId = IERC721GeneralizedCollection(el.token).getRecordFieldValue(el.tokenId, TEMPLATE_ID);
 
-      // check for same template
-      if (expectedId != 0 && templateId != expectedId) {
-        revert MergeDifferentTemplate();
+        // check for same template
+        if (templateId != expectedId) {
+          revert MergeDifferentTemplate();
+        }
       }
 
       unchecked {
