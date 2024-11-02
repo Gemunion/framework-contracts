@@ -330,7 +330,7 @@ async function main() {
   contracts.erc1155Blacklist = await erc1155BlacklistFactory.deploy(royalty, baseTokenURI);
   await debug(contracts);
 
-  const vestingFactory = await ethers.getContractFactory("Vesting");
+  const vestingFactory = await ethers.getContractFactory("LegacyVesting");
   contracts.vesting = await vestingFactory.deploy(wallet, timestamp, 12, 417);
   await debug(contracts);
 

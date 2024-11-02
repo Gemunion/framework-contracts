@@ -100,8 +100,8 @@ hardhat flatten contracts/Mechanics/Raffle/Raffle.sol > dist/Mechanics/Raffle/Ra
 mkdir -p dist/Mechanics/Staking
 hardhat flatten contracts/Mechanics/Staking/Staking.sol > dist/Mechanics/Staking/Staking.sol
 
-mkdir -p dist/Mechanics/Vesting
-hardhat flatten contracts/Mechanics/Vesting/Vesting.sol > dist/Mechanics/Vesting/Vesting.sol
+mkdir -p dist/Mechanics/LegacyVesting
+hardhat flatten contracts/Mechanics/LegacyVesting/LegacyVesting.sol > dist/Mechanics/LegacyVesting/LegacyVesting.sol
 
 mkdir -p dist/Mechanics/Waitlist
 hardhat flatten contracts/Mechanics/Waitlist/Waitlist.sol > dist/Mechanics/Waitlist/Waitlist.sol

@@ -22,7 +22,7 @@ import { Asset, TokenType, AllowedTokenTypes } from "../../Exchange/lib/interfac
  *      - TopUp (EthBerry)
  *      This contract abstracts all common functions and is used as an foundation for other vesting contracts
  */
-contract Vesting is VestingWallet, NativeRejector, CoinHolder, TopUp {
+contract LegacyVesting is VestingWallet, NativeRejector, CoinHolder, TopUp {
   using SafeCast for uint256;
 
   uint64 public constant _monthInSeconds = 2592000; // The number of seconds in month

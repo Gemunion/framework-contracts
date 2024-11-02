@@ -19,7 +19,7 @@ describe("ContractManagerDiamond", function () {
         "PonziFactoryFacet",
         "RaffleFactoryFacet",
         "StakingFactoryFacet",
-        "VestingFactoryFacet",
+        "LegacyVestingFactoryFacet",
         "WaitListFactoryFacet",
         "UseFactoryFacet",
         "AccessControlFacet",

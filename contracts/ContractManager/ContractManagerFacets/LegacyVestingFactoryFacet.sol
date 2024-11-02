@@ -18,7 +18,7 @@ import { ExchangeUtils } from "../../Exchange/lib/ExchangeUtils.sol";
  * @title VestingFactory
  * @dev Extension that provides functionality for deployment of Vesting contracts
  */
-contract VestingFactoryFacet is AbstractFactoryFacet, SignatureValidatorCM {
+contract LegacyVestingFactoryFacet is AbstractFactoryFacet, SignatureValidatorCM {
   constructor() SignatureValidatorCM() {}
 
   bytes private constant VESTING_ARGUMENTS_SIGNATURE =
@@ -43,7 +43,7 @@ contract VestingFactoryFacet is AbstractFactoryFacet, SignatureValidatorCM {
     string contractTemplate;
   }
 
-  event VestingDeployed(address account, uint256 externalId, VestingArgs args);
+  event LegacyVestingDeployed(address account, uint256 externalId, VestingArgs args);
 
   /**
    * @dev Deploys a vesting contract with the specified arguments.
@@ -68,7 +68,7 @@ contract VestingFactoryFacet is AbstractFactoryFacet, SignatureValidatorCM {
     bytes memory argument = abi.encode(args.owner, args.startTimestamp, args.cliffInMonth, args.monthlyRelease);
     bytes memory bytecode = abi.encodePacked(params.bytecode, argument);
     account = Create2.computeAddress(params.nonce, keccak256(bytecode));
-    emit VestingDeployed(account, params.externalId, args);
+    emit LegacyVestingDeployed(account, params.externalId, args);
     Create2.deploy(0, params.nonce, bytecode);
   }
 

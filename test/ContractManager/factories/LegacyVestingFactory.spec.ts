@@ -10,8 +10,8 @@ import { getInitCodeHash, isEqualEventArgObj } from "../../utils";
 import { contractTemplate, externalId, userId } from "../../constants";
 import { deployDiamond } from "../../Exchange/shared";
 
-describe("VestingFactoryDiamond", function () {
-  const factory = async (facetName = "VestingFactoryFacet"): Promise<any> => {
+describe("LegacyVestingFactoryDiamond", function () {
+  const factory = async (facetName = "LegacyVestingFactoryFacet"): Promise<any> => {
     const diamondInstance = await deployDiamond(
       "DiamondCM",
       [facetName, "AccessControlFacet", "PausableFacet"],
@@ -27,7 +27,7 @@ describe("VestingFactoryDiamond", function () {
     it("should deploy contract", async function () {
       const [owner] = await ethers.getSigners();
       const network = await ethers.provider.getNetwork();
-      const { bytecode } = await ethers.getContractFactory("Vesting");
+      const { bytecode } = await ethers.getContractFactory("LegacyVesting");
 
       const contractInstance = await factory();
 
@@ -101,7 +101,7 @@ describe("VestingFactoryDiamond", function () {
       const address = getCreate2Address(await contractInstance.getAddress(), nonce, initCodeHash);
 
       await expect(tx)
-        .to.emit(contractInstance, "VestingDeployed")
+        .to.emit(contractInstance, "LegacyVestingDeployed")
         .withArgs(
           address,
           userId,
@@ -118,7 +118,7 @@ describe("VestingFactoryDiamond", function () {
     it("should fail: SignerMissingRole", async function () {
       const [owner] = await ethers.getSigners();
       const network = await ethers.provider.getNetwork();
-      const { bytecode } = await ethers.getContractFactory("Vesting");
+      const { bytecode } = await ethers.getContractFactory("LegacyVesting");
 
       const contractInstance = await factory();
 

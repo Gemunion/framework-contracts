@@ -19,7 +19,7 @@ async function main() {
       "PonziFactoryFacet",
       "RaffleFactoryFacet",
       "StakingFactoryFacet",
-      "VestingFactoryFacet",
+      "LegacyVestingFactoryFacet",
       "WaitListFactoryFacet",
       "PaymentSplitterFactoryFacet",
       "UseFactoryFacet",
