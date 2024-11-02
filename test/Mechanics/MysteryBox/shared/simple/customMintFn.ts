@@ -13,7 +13,7 @@ export const customMint = async (
 ) => {
   const erc721Factory = (name: string) => deployERC721(name);
 
-  const erc721SimpleInstance = await erc721Factory("ERC721Simple");
+  const erc721SimpleInstance = await erc721Factory("ERC721Random");
   await erc721SimpleInstance.grantRole(MINTER_ROLE, mysteryBoxInstance);
 
   return mysteryBoxInstance.connect(signer).mintBox(receiver, templateId, [

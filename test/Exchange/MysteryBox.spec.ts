@@ -34,7 +34,7 @@ describe("Diamond Exchange MysteryBox", function () {
         const exchangeInstance = await factory();
         const generateSignature = await getSignatures(exchangeInstance);
 
-        const erc721Instance = await deployErc721Base("ERC721Simple", exchangeInstance);
+        const erc721Instance = await deployErc721Base("ERC721Random", exchangeInstance);
         const mysteryBoxInstance = await deployErc721Base("ERC721MysteryBoxSimple", exchangeInstance);
 
         const signature = await generateSignature({
@@ -147,8 +147,8 @@ describe("Diamond Exchange MysteryBox", function () {
         const generateSignature = await getSignatures(exchangeInstance);
 
         const erc20Instance = await deployErc20Base("ERC20Simple", exchangeInstance);
-        const erc721Instance = await deployErc721Base("ERC721Simple", exchangeInstance);
-        const erc998Instance = await deployErc721Base("ERC998Simple", exchangeInstance);
+        const erc721Instance = await deployErc721Base("ERC721Random", exchangeInstance);
+        const erc998Instance = await deployErc721Base("ERC998Random", exchangeInstance);
 
         const mysteryBoxInstance = await deployErc721Base("ERC721MysteryBoxSimple", exchangeInstance);
 
