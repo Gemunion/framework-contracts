@@ -15,6 +15,7 @@ import { IERC721Genes } from "../../Mechanics/Genes/interfaces/IERC721Genes.sol"
 
 import { IERC721MysteryBox } from "../../Mechanics/MysteryBox/interfaces/IERC721MysteryBox.sol";
 import { IERC721LootBox } from "../../Mechanics/LootBox/interfaces/IERC721LootBox.sol";
+import { IERC721Vesting } from "../../Mechanics/Vesting/interfaces/IERC721Vesting.sol";
 import { IDispenser } from "../../Mechanics/Dispenser/interfaces/IDispenser.sol";
 import { IERC721LotteryTicket } from "../../Mechanics/Lottery/interfaces/IERC721LotteryTicket.sol";
 import { IERC721RaffleTicket } from "../../Mechanics/Raffle/interfaces/IERC721RaffleTicket.sol";
@@ -34,6 +35,8 @@ contract InterfaceIdCalculator {
     console.logBytes4(type(IERC721MysteryBox).interfaceId);
     console.logString("IERC721LootBox");
     console.logBytes4(type(IERC721LootBox).interfaceId);
+    console.logString("IERC721Vesting");
+    console.logBytes4(type(IERC721Vesting).interfaceId);
 
     console.logString("IERC721LotteryTicket");
     console.logBytes4(type(IERC721LotteryTicket).interfaceId);

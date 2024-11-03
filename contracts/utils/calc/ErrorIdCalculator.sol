@@ -31,6 +31,7 @@ import { IStakingErrors } from "../../Mechanics/Staking/interfaces/IStakingError
 import { IPonziErrors } from "../../Mechanics/Ponzi/interfaces/IPonziErrors.sol";
 import { IWaitListErrors } from "../../Mechanics/WaitList/interfaces/IWaitListErrors.sol";
 import { IDispenserErrors } from "../../Mechanics/Dispenser/interfaces/IDispenserErrors.sol";
+import { IERC721VestingErrors } from "../../Mechanics/Vesting/interfaces/IERC721VestingErrors.sol";
 
 interface IAccessControl {
   error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
@@ -77,6 +78,7 @@ contract ErrorsIdCalculator is
   IERC721SimpleErrors,
   IERC721BoxErrors,
   IERC721GenesErrors,
+  IERC721VestingErrors,
   IPredictionErrors,
   ILotteryErrors,
   IRaffleErrors,

@@ -23,7 +23,7 @@ describe("ERC20FactoryDiamond", function () {
 
   describe("deployERC20Token", function () {
     it("should deploy contract", async function () {
-      const [owner, receiver] = await ethers.getSigners();
+      const [owner] = await ethers.getSigners();
       const network = await ethers.provider.getNetwork();
       const { bytecode } = await ethers.getContractFactory("ERC20Simple");
 

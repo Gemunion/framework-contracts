@@ -148,6 +148,10 @@ export const fwFunctionNames = [
   "ERC721MysteryBoxSimple:unpack",
   "ERC721Wrapper:mintBox",
   "ERC721Wrapper:unpack",
+  "ERC721Vesting:mintBox",
+  "ERC721Vesting:release",
+  "ERC721Vesting:releasable",
+  "ERC721Vesting:split",
 
   "ERC998Simple:unWhitelistChild",
   "ERC998Simple:whiteListChild",
@@ -219,6 +223,7 @@ export const fwFunctionNames = [
   "LegacyVestingFactoryFacet:deployVesting",
   "WaitListFactoryFacet:deployWaitList",
   "RaffleFactoryFacet:deployRaffle",
+  "VestingFactoryFacet:deployVestingBox",
 
   "TopUp:topUp",
 
@@ -237,6 +242,7 @@ export const fwFunctionNames = [
   "ExchangeCraftFacet:craft",
   "ExchangeMergeFacet:merge",
   "ExchangeDismantleFacet:dismantle",
+  "ExchangeVestingFacet:purchaseVesting",
 ];
 
 task("abis", "Save all functions abi separately")
