@@ -16,7 +16,7 @@
     "@ethberry/contracts-erc721": "5.0.51",
     "@ethberry/contracts-erc721c": "5.0.51",
     "@ethberry/contracts-erc721e": "5.0.51",
-    "@ethberry/contracts-erc998td": "6.0.34",
+    "@ethberry/contracts-erc998td": "6.0.35",
     "@ethberry/contracts-finance": "5.0.51",
     "@ethberry/contracts-helpers": "5.0.51",
     "@ethberry/contracts-mocks": "5.0.51",
