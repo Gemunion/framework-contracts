@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { ethers, web3 } from "hardhat";
-import { time } from "@openzeppelin/test-helpers";
+import { ethers } from "hardhat";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { deployERC20Mock } from "@ethberry/contracts-mocks";
 
@@ -30,6 +30,6 @@ export async function calc(name: string, months: number, percent: number) {
     await expect(tx).changeTokenBalances(erc20Instance, [vestingInstance, owner.address], [-releasable, releasable]);
 
     const current = await time.latest();
-    await time.increaseTo(current.add(web3.utils.toBN(span)));
+    await time.increaseTo(current + span);
   }
 }

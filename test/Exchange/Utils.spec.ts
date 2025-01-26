@@ -157,7 +157,7 @@ describe("Diamond Exchange Utils", function () {
           await expect(tx).to.be.revertedWithCustomError(exchangeInstance, "ETHInsufficientBalance");
         });
 
-        it("should spendFrom: ETH => Reverter (FailedInnerCall)", async function () {
+        it("should spendFrom: ETH => Reverter (PaymentRejected)", async function () {
           const [owner] = await ethers.getSigners();
 
           const jerkInstance = await deployRejector();
@@ -178,7 +178,9 @@ describe("Diamond Exchange Utils", function () {
             { value: amount },
           );
 
-          await expect(tx).to.be.revertedWithCustomError(exchangeInstance, "FailedInnerCall");
+          await expect(tx)
+            .to.be.revertedWithCustomError(jerkInstance, "PaymentRejected")
+            .withArgs(exchangeInstance, amount);
         });
       });
 
@@ -1272,7 +1274,7 @@ describe("Diamond Exchange Utils", function () {
           await expect(tx2).to.be.revertedWithCustomError(exchangeInstance, "ETHInvalidReceiver").withArgs(ZeroAddress);
         });
 
-        it("should spend: ETH => EOA (AddressInsufficientBalance)", async function () {
+        it("should spend: ETH => EOA (InsufficientBalance)", async function () {
           const [_owner, receiver] = await ethers.getSigners();
 
           const exchangeInstance = await factory();
@@ -1290,9 +1292,7 @@ describe("Diamond Exchange Utils", function () {
             enabled,
           );
 
-          await expect(tx)
-            .to.be.revertedWithCustomError(exchangeInstance, "AddressInsufficientBalance")
-            .withArgs(exchangeInstance);
+          await expect(tx).to.be.revertedWithCustomError(exchangeInstance, "InsufficientBalance").withArgs(0, amount);
         });
       });
 

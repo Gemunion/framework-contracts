@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { getCreate2Address } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { amount, DEFAULT_ADMIN_ROLE, nonce } from "@ethberry/contracts-constants";
 import { deployERC20Mock } from "@ethberry/contracts-mocks";
@@ -69,7 +69,7 @@ describe("LegacyVestingFactoryDiamond", function () {
           },
           args: {
             owner: owner.address,
-            startTimestamp: current.toNumber(),
+            startTimestamp: current,
             cliffInMonth: 12,
             monthlyRelease: 417,
             contractTemplate,
@@ -85,7 +85,7 @@ describe("LegacyVestingFactoryDiamond", function () {
         },
         {
           owner: owner.address,
-          startTimestamp: current.toNumber(),
+          startTimestamp: current,
           cliffInMonth: 12,
           monthlyRelease: 417,
           contractTemplate,
@@ -95,7 +95,7 @@ describe("LegacyVestingFactoryDiamond", function () {
 
       const initCodeHash = getInitCodeHash(
         ["address", "uint256", "uint256", "uint256"],
-        [owner.address, current.toNumber(), 12, 417],
+        [owner.address, current, 12, 417],
         bytecode,
       );
       const address = getCreate2Address(await contractInstance.getAddress(), nonce, initCodeHash);
@@ -163,7 +163,7 @@ describe("LegacyVestingFactoryDiamond", function () {
           },
           args: {
             owner: owner.address,
-            startTimestamp: current.toNumber(),
+            startTimestamp: current,
             cliffInMonth: 12,
             monthlyRelease: 417,
             contractTemplate,
@@ -182,7 +182,7 @@ describe("LegacyVestingFactoryDiamond", function () {
         },
         {
           owner: owner.address,
-          startTimestamp: current.toNumber(),
+          startTimestamp: current,
           cliffInMonth: 12,
           monthlyRelease: 417,
           contractTemplate,

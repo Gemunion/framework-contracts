@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { makeTimestamps, Position, Outcome, fundAndBet } from "./utils";
 

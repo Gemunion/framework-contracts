@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { ZeroAddress, toQuantity } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { isEqualEventArgObj } from "../../../utils";
 import { TokenType } from "../../../types";
@@ -22,7 +22,7 @@ export function shouldStartRound(factory: () => Promise<any>) {
         amount: 1n,
       };
 
-      const startTimestamp = (await time.latest()).toNumber() + 1;
+      const startTimestamp = (await time.latest()) + 1;
       const tx = lotteryInstance.startRound(ticket, price, 100);
 
       await expect(tx)

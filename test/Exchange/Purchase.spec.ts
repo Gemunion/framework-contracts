@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { Contract, ZeroAddress, ZeroHash } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { amount, METADATA_ROLE, MINTER_ROLE, nonce } from "@ethberry/contracts-constants";
 import { recursivelyDecodeResult } from "@ethberry/utils-eth";

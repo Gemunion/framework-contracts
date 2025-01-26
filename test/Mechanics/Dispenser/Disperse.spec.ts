@@ -98,7 +98,7 @@ describe("Dispenser", function () {
         .withArgs(owner, amount / 2n, amount);
     });
 
-    it("should fail: AddressInsufficientBalance", async function () {
+    it("should fail: InsufficientBalance", async function () {
       const [_owner, receiver, stranger] = await ethers.getSigners();
 
       const contractInstance = await factory();
@@ -122,9 +122,7 @@ describe("Dispenser", function () {
         { value: amount },
       );
 
-      await expect(tx)
-        .to.be.revertedWithCustomError(contractInstance, "AddressInsufficientBalance")
-        .withArgs(contractInstance);
+      await expect(tx).to.be.revertedWithCustomError(contractInstance, "InsufficientBalance").withArgs(0, amount);
     });
 
     it("should fail: DispenserWrongArrayLength", async function () {
@@ -175,10 +173,7 @@ describe("Dispenser", function () {
       const lib = await ethers.getContractAt("ExchangeUtils", contractInstance, owner);
       await expect(tx).to.emit(lib, "PaymentReleased").withArgs(attackerInstance, amount);
 
-      await expect(tx).to.changeEtherBalances(
-        [owner, contractInstance, attackerInstance],
-        [-amount, 0, amount],
-      );
+      await expect(tx).to.changeEtherBalances([owner, contractInstance, attackerInstance], [-amount, 0, amount]);
     });
   });
 

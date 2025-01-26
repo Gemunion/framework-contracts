@@ -4,9 +4,9 @@ import { Result, toBeHex, WeiPerEther, zeroPadValue, ZeroAddress } from "ethers"
 import { baseTokenURI, royalty } from "@ethberry/contracts-constants";
 import { recursivelyDecodeResult } from "@ethberry/utils-eth";
 import { MINTER_ROLE } from "@ethberry/contracts-constants";
-import { VrfCoordinatorV2PlusAddress, LinkTokenAddress } from "@framework/types";
 
 import { getContractName, chainIdToSuffix } from "../../test/utils";
+import { LinkTokenAddress, VrfCoordinatorV2PlusAddress } from "../utils/address";
 
 async function main() {
   const [owner] = await ethers.getSigners();

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { ContractTransactionResponse } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { TokenType } from "@ethberry/types-blockchain";
 

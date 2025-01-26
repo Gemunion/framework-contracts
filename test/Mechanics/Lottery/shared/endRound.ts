@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers, network } from "hardhat";
 import { ZeroAddress } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 import { VRFCoordinatorV2PlusMock } from "../../../../typechain-types";
@@ -51,7 +51,7 @@ export function shouldEndRound(factory: () => Promise<any>) {
       const tx = lotteryInstance.endRound();
       await expect(tx).to.emit(lotteryInstance, "RoundEnded");
 
-      const currentTimestamp = (await time.latest()).toNumber();
+      const currentTimestamp = await time.latest();
       await randomRequest(lotteryInstance, vrfInstance);
 
       const roundInfo = await lotteryInstance.getCurrentRoundInfo();

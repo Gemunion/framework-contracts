@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { makeTimestamps } from "./utils";
 
 export function shouldStartPrediction(predictionFactory: () => Promise<any>, betAssetFactory: () => Promise<any>) {

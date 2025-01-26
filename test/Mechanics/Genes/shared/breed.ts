@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers, network } from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { VRFCoordinatorV2PlusMock } from "../../../../typechain-types";
 import { fatherGenes, genesTokenAttributes, motherGenes, templateId } from "../../../constants";

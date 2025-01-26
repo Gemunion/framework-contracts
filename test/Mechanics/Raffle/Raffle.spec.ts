@@ -1,8 +1,7 @@
 import { expect } from "chai";
-import { ethers, network, web3 } from "hardhat";
-import { encodeBytes32String, getUint, parseEther, toQuantity, ZeroAddress, Contract } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+import { ethers, network } from "hardhat";
+import { Contract, encodeBytes32String, getUint, parseEther, toQuantity, ZeroAddress } from "ethers";
+import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { shouldBehaveLikePausable } from "@ethberry/contracts-utils";
 import { shouldBehaveLikeAccessControl } from "@ethberry/contracts-access";
@@ -93,7 +92,7 @@ describe("Raffle", function () {
         0, // maxTicket count
       );
 
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx)
         .to.emit(raffleInstance, "RoundStarted")
         .withArgs(
@@ -185,7 +184,7 @@ describe("Raffle", function () {
       }
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {
@@ -215,7 +214,7 @@ describe("Raffle", function () {
         },
         0, // maxTicket count
       );
-      const timeStart: number = (await time.latest()).toNumber();
+      const timeStart: number = await time.latest();
 
       await expect(tx0)
         .to.emit(raffleInstance, "RoundStarted")
@@ -252,7 +251,7 @@ describe("Raffle", function () {
       }
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {
@@ -319,7 +318,7 @@ describe("Raffle", function () {
         },
         0, // maxTicket count
       );
-      const timeStart: number = (await time.latest()).toNumber();
+      const timeStart: number = await time.latest();
 
       await expect(tx0)
         .to.emit(raffleInstance, "RoundStarted")
@@ -425,7 +424,7 @@ describe("Raffle", function () {
       }
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {
@@ -494,7 +493,7 @@ describe("Raffle", function () {
         },
         0, // maxTicket count
       );
-      const timeStart: number = (await time.latest()).toNumber();
+      const timeStart: number = await time.latest();
 
       await expect(tx0)
         .to.emit(raffleInstance, "RoundStarted")
@@ -673,7 +672,7 @@ describe("Raffle", function () {
       }
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {
@@ -947,7 +946,7 @@ describe("Raffle", function () {
       }
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {
@@ -966,7 +965,7 @@ describe("Raffle", function () {
 
       // WAIT for RELEASE
       const latest = await time.latestBlock();
-      await time.advanceBlockTo(latest.add(web3.utils.toBN(raffleConfig.timeLagBeforeRelease + 1)));
+      await time.advanceBlockTo(latest + raffleConfig.timeLagBeforeRelease + 1);
 
       const tx1 = raffleInstance.releaseFunds(1);
       await expect(tx1).to.emit(raffleInstance, "Released").withArgs(1, amount);
@@ -1146,7 +1145,7 @@ describe("Raffle", function () {
       await expect(tx01).changeTokenBalances(erc20Instance, [receiver, raffleInstance], [-amount, amount]);
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {
@@ -1169,7 +1168,7 @@ describe("Raffle", function () {
       expect(Number(prizeNumber)).to.be.greaterThan(0).to.be.lessThan(3);
       // WAIT for RELEASE
       const latest = await time.latestBlock();
-      await time.advanceBlockTo(latest.add(web3.utils.toBN(raffleConfig.timeLagBeforeRelease + 1)));
+      await time.advanceBlockTo(latest + raffleConfig.timeLagBeforeRelease + 1);
 
       const tx1 = raffleInstance.releaseFunds(1);
       await expect(tx1)
@@ -1419,7 +1418,7 @@ describe("Raffle", function () {
       await expect(tx02).changeTokenBalances(erc20Instance, [receiver, raffleInstance], [-amount, amount]);
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {
@@ -1461,7 +1460,7 @@ describe("Raffle", function () {
 
       // WAIT for RELEASE
       const latest = await time.latestBlock();
-      await time.advanceBlockTo(latest.add(web3.utils.toBN(raffleConfig.timeLagBeforeRelease + 1)));
+      await time.advanceBlockTo(latest + raffleConfig.timeLagBeforeRelease + 1);
 
       const tx1 = raffleInstance.releaseFunds(0);
       await expect(tx1).to.be.revertedWithCustomError(raffleInstance, "RaffleZeroBalance");
@@ -1728,7 +1727,7 @@ describe("Raffle", function () {
       );
 
       const tx0 = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx0).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       const signature = await generateSignature({
@@ -1935,7 +1934,7 @@ describe("Raffle", function () {
       }
 
       const tx = await raffleInstance.endRound();
-      const current: number = (await time.latest()).toNumber();
+      const current: number = await time.latest();
       await expect(tx).to.emit(raffleInstance, "RoundEnded").withArgs(1, current);
 
       if (network.name !== "hardhat") {

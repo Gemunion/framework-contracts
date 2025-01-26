@@ -1,7 +1,6 @@
 import { config } from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomiclabs/hardhat-web3";
 import "hardhat-contract-sizer";
 
 import "./tasks";

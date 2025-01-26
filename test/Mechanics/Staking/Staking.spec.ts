@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { ethers, web3 } from "hardhat";
+import { ethers } from "hardhat";
 import { parseEther, ZeroAddress, ZeroHash } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { shouldBehaveLikePausable, shouldSupportsInterface } from "@ethberry/contracts-utils";
 import { shouldBehaveLikeAccessControl } from "@ethberry/contracts-access";
@@ -12,7 +12,7 @@ import {
   MINTER_ROLE,
   nonce,
   PAUSER_ROLE,
-  TEMPLATE_ID
+  TEMPLATE_ID,
 } from "@ethberry/contracts-constants";
 
 import { expiresAt, templateId, tokenId, tokenIds, tokenIdsZero } from "../../constants";
@@ -898,7 +898,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.connect(receiver).deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, receiver.address, startTimestamp, tokenIds);
@@ -906,7 +906,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -963,7 +963,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.connect(receiver).deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, receiver.address, startTimestamp, tokenIds);
@@ -971,7 +971,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -1028,7 +1028,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.connect(receiver).deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, receiver.address, startTimestamp, tokenIds);
@@ -1036,7 +1036,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -1052,7 +1052,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.connect(receiver).receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, receiver.address, endTimestamp)
@@ -1152,7 +1152,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1205,7 +1205,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1266,7 +1266,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1274,7 +1274,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period + 1)));
+      await time.advanceBlockTo(current + period + 1);
 
       // REWARD
       await stakingInstance.topUp(
@@ -1290,7 +1290,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, false, false);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
 
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
       await expect(tx2).to.changeEtherBalances([owner, stakingInstance], [amount * 2n, -amount * 2n]);
@@ -1330,7 +1330,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1338,11 +1338,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD NOTHING
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -1389,7 +1389,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1397,7 +1397,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -1413,7 +1413,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -1464,7 +1464,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIdsZero, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIdsZero);
@@ -1472,7 +1472,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -1488,7 +1488,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -1536,7 +1536,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1557,11 +1557,11 @@ describe("Staking", function () {
 
       // TIME 1
       const current1 = await time.latestBlock();
-      await time.advanceBlockTo(current1.add(web3.utils.toBN(period + 1)));
+      await time.advanceBlockTo(current1 + period + 1);
 
       // REWARD 1
       const tx2 = await stakingInstance.receiveReward(1, false, false);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
 
       await expect(tx2).to.emit(stakingInstance, "DepositFinish").withArgs(1, owner.address, endTimestamp, 1);
 
@@ -1569,17 +1569,17 @@ describe("Staking", function () {
 
       // TIME 2
       const current2 = await time.latestBlock();
-      await time.advanceBlockTo(current2.add(web3.utils.toBN(period + 1)));
+      await time.advanceBlockTo(current2 + period + 1);
 
       // REWARD 2
       const tx3 = await stakingInstance.receiveReward(1, false, false);
-      const endTimestamp2: number = (await time.latest()).toNumber();
+      const endTimestamp2: number = await time.latest();
       await expect(tx3).to.emit(stakingInstance, "DepositFinish").withArgs(1, owner.address, endTimestamp2, 1);
       await expect(tx3).to.changeEtherBalances([owner, stakingInstance], [amount, -amount]);
 
       // REWARD 3
       const tx4 = await stakingInstance.receiveReward(1, false, true);
-      const endTimestamp3: number = (await time.latest()).toNumber();
+      const endTimestamp3: number = await time.latest();
       await expect(tx4).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp3);
       await expect(tx4).to.changeEtherBalances([owner, stakingInstance], [amount, -amount]);
 
@@ -1627,7 +1627,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1656,11 +1656,11 @@ describe("Staking", function () {
 
       // TIME 1
       const current1 = await time.latestBlock();
-      await time.advanceBlockTo(current1.add(web3.utils.toBN(period + 1)));
+      await time.advanceBlockTo(current1 + period + 1);
 
       // REWARD 1
       const tx2 = await stakingInstance.receiveReward(1, false, false);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositFinish").withArgs(1, owner.address, endTimestamp, 1);
       await expect(tx2).to.changeEtherBalances([owner, stakingInstance], [amount, -amount]);
 
@@ -1729,7 +1729,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1737,7 +1737,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await erc20Instance.mint(owner.address, amount * BigInt(cycles));
@@ -1755,7 +1755,7 @@ describe("Staking", function () {
       expect(balance1).to.equal(amount * BigInt(cycles));
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -1811,7 +1811,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1819,11 +1819,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -1879,7 +1879,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -1887,11 +1887,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -1944,7 +1944,7 @@ describe("Staking", function () {
       await erc20Instance.approve(stakingInstance, amount);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, tokenIds)
@@ -1958,7 +1958,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -1974,7 +1974,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2028,7 +2028,7 @@ describe("Staking", function () {
       await erc20Instance.approve(stakingInstance, amount);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, tokenIds)
@@ -2042,7 +2042,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await erc20Instance.mint(owner.address, amount * BigInt(cycles));
@@ -2057,7 +2057,7 @@ describe("Staking", function () {
       ]);
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2112,7 +2112,7 @@ describe("Staking", function () {
       await erc20Instance.approve(stakingInstance, amount);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, tokenIds)
@@ -2126,11 +2126,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2201,7 +2201,7 @@ describe("Staking", function () {
       await erc20Instance.approve(stakingInstance, amount);
 
       const tx1 = await stakingInstance.deposit(params, [0, 0], { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, [0, 0])
@@ -2216,11 +2216,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2290,7 +2290,7 @@ describe("Staking", function () {
       await erc20Instance.approve(stakingInstance, amount);
 
       const tx1 = await stakingInstance.deposit(params, [0, 0], { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, [0, 0])
@@ -2314,11 +2314,11 @@ describe("Staking", function () {
 
       // TIME 1 CYCLE
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * 1)));
+      await time.advanceBlockTo(current + period * 1);
 
       // GET SECOND ADVANCE REWARD
       const tx22 = await stakingInstance.receiveReward(1, false, false);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
 
       await expect(tx22)
         .to.emit(stakingInstance, "DepositFinish")
@@ -2328,7 +2328,7 @@ describe("Staking", function () {
 
       // TIME 0.5 CYCLE
       const current1 = await time.latestBlock();
-      await time.advanceBlockTo(current1.add(web3.utils.toBN(period / 2)));
+      await time.advanceBlockTo(current1 + period / 2);
 
       // TRY TO RECEIVE REWARD WITH NOT ENOUGH TIME PASSED
       const tx3 = stakingInstance.receiveReward(1, false, false);
@@ -2336,7 +2336,7 @@ describe("Staking", function () {
 
       // breakLastPeriod = RETURN DEPOSIT
       const tx33 = await stakingInstance.receiveReward(1, false, true);
-      const endTimestamp1: number = (await time.latest()).toNumber();
+      const endTimestamp1: number = await time.latest();
       await expect(tx33)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp1)
@@ -2395,7 +2395,7 @@ describe("Staking", function () {
       await erc20Instance.approve(stakingInstance, amount);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, tokenIds)
@@ -2409,11 +2409,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2469,7 +2469,7 @@ describe("Staking", function () {
       await erc721Instance.approve(stakingInstance, tokenId);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -2481,7 +2481,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -2497,7 +2497,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2552,7 +2552,7 @@ describe("Staking", function () {
       await erc721Instance.approve(stakingInstance, tokenId);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -2564,7 +2564,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await erc20Instance.mint(owner.address, amount * BigInt(cycles));
@@ -2579,7 +2579,7 @@ describe("Staking", function () {
       ]);
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2635,7 +2635,7 @@ describe("Staking", function () {
       await erc721Instance.approve(stakingInstance, 2);
 
       const tx1 = await stakingInstance.deposit(params, [2]);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, [2])
@@ -2647,7 +2647,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await erc20Instance.mint(owner.address, amount * BigInt(cycles));
@@ -2662,7 +2662,7 @@ describe("Staking", function () {
       ]);
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2719,7 +2719,7 @@ describe("Staking", function () {
       await erc721RandomInstance.approve(stakingInstance, tokenId);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -2731,11 +2731,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2792,7 +2792,7 @@ describe("Staking", function () {
       await erc721Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -2804,11 +2804,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2864,7 +2864,7 @@ describe("Staking", function () {
       await erc998Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -2876,7 +2876,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -2892,7 +2892,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -2947,7 +2947,7 @@ describe("Staking", function () {
       await erc998Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -2959,7 +2959,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await erc20Instance.mint(owner.address, amount * BigInt(cycles));
@@ -2974,7 +2974,7 @@ describe("Staking", function () {
       ]);
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3031,7 +3031,7 @@ describe("Staking", function () {
       await erc998Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3043,11 +3043,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3103,7 +3103,7 @@ describe("Staking", function () {
       await erc998Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3115,11 +3115,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3172,7 +3172,7 @@ describe("Staking", function () {
       await erc998Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3184,11 +3184,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3242,7 +3242,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3254,7 +3254,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await stakingInstance.topUp(
@@ -3270,7 +3270,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3325,7 +3325,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3337,7 +3337,7 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       await erc20Instance.mint(owner.address, amount * BigInt(cycles));
@@ -3352,7 +3352,7 @@ describe("Staking", function () {
       ]);
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3409,7 +3409,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3421,11 +3421,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3483,7 +3483,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3495,11 +3495,11 @@ describe("Staking", function () {
 
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -3555,7 +3555,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIds, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds);
@@ -3577,7 +3577,7 @@ describe("Staking", function () {
       );
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
 
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
       await expect(tx2).to.changeEtherBalances([owner, stakingInstance], [amount / 2n, -amount / 2n]);
@@ -3628,7 +3628,7 @@ describe("Staking", function () {
       await erc20Instance.approve(stakingInstance, amount);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, tokenIds)
@@ -3644,7 +3644,7 @@ describe("Staking", function () {
       // REWARD
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
       await expect(tx2)
         .to.emit(erc20Instance, "Transfer")
@@ -3701,7 +3701,7 @@ describe("Staking", function () {
       await erc721SimpleInstance.approve(stakingInstance, tokenId);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3715,7 +3715,7 @@ describe("Staking", function () {
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
       await expect(tx2).to.emit(erc721SimpleInstance, "Transfer").withArgs(stakingInstance, owner.address, tokenId);
 
@@ -3770,7 +3770,7 @@ describe("Staking", function () {
       await erc721SimpleInstance.approve(stakingInstance, tokenId);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3784,7 +3784,7 @@ describe("Staking", function () {
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
 
       const balance4 = await erc721SimpleInstance.balanceOf(owner.address);
@@ -3838,7 +3838,7 @@ describe("Staking", function () {
       await erc998Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3852,7 +3852,7 @@ describe("Staking", function () {
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
       await expect(tx2).to.emit(erc998Instance, "Transfer").withArgs(stakingInstance, owner.address, tokenId);
 
@@ -3907,7 +3907,7 @@ describe("Staking", function () {
       await erc998Instance.approve(stakingInstance, 1);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3921,7 +3921,7 @@ describe("Staking", function () {
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
 
       const balance4 = await erc998Instance.balanceOf(owner.address);
@@ -3975,7 +3975,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, tokenIds);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIds)
@@ -3989,7 +3989,7 @@ describe("Staking", function () {
 
       // REWARD
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
 
       await expect(tx2)
@@ -4077,7 +4077,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, [0, 0, 1, 1], { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, [0, 0, 1, 1])
@@ -4102,7 +4102,7 @@ describe("Staking", function () {
       // REWARD
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -4199,7 +4199,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, [0, 0, 1, 1], { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, [0, 0, 1, 1])
@@ -4224,7 +4224,7 @@ describe("Staking", function () {
       // REWARD
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
 
       const balance4 = await erc20Instance.balanceOf(owner.address);
@@ -4314,7 +4314,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, [0, 0, 1, 1], { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, [0, 0, 1, 1])
@@ -4339,7 +4339,7 @@ describe("Staking", function () {
       // REWARD
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -4485,7 +4485,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, [0, 0, 1, 1], { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, [0, 0, 1, 1])
@@ -4521,7 +4521,7 @@ describe("Staking", function () {
       ]);
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, owner.address, endTimestamp)
@@ -4632,7 +4632,7 @@ describe("Staking", function () {
 
       // DEPOSIT 1
       const tx1 = await stakingInstance.connect(receiver).deposit(params, tokenIdsZero);
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, receiver.address, startTimestamp, tokenIdsZero)
@@ -4683,7 +4683,7 @@ describe("Staking", function () {
 
       // TIME 1
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // DEPOSIT 2
       const tx11 = await stakingInstance.deposit(
@@ -4697,7 +4697,7 @@ describe("Staking", function () {
         },
         tokenIdsZero,
       );
-      const startTimestamp1: number = (await time.latest()).toNumber();
+      const startTimestamp1: number = await time.latest();
       await expect(tx11)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(2, 2, owner.address, startTimestamp1, tokenIdsZero)
@@ -4722,7 +4722,7 @@ describe("Staking", function () {
       ]);
 
       const tx21 = await stakingInstance.connect(receiver).receiveReward(1, true, true);
-      const endTimestamp1: number = (await time.latest()).toNumber();
+      const endTimestamp1: number = await time.latest();
       await expect(tx21)
         .to.emit(stakingInstance, "DepositWithdraw")
         .withArgs(1, receiver.address, endTimestamp1)
@@ -4737,7 +4737,7 @@ describe("Staking", function () {
       // REWARD 2
 
       const tx22 = await stakingInstance.receiveReward(2, true, true);
-      const endTimestamp2: number = (await time.latest()).toNumber();
+      const endTimestamp2: number = await time.latest();
       await expect(tx22).to.emit(stakingInstance, "DepositWithdraw").withArgs(2, owner.address, endTimestamp2);
 
       const balance32 = await erc20Instance.balanceOf(owner.address);
@@ -4798,7 +4798,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIdsZero, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIdsZero);
@@ -4808,7 +4808,7 @@ describe("Staking", function () {
       // REWARD
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
 
       await expect(tx2).to.changeEtherBalances([owner, stakingInstance], [amount / 2n, -amount / 2n]);
@@ -4873,7 +4873,7 @@ describe("Staking", function () {
 
       // STAKE
       const tx1 = await stakingInstance.deposit(params, tokenIdsZero, { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, tokenId, owner.address, startTimestamp, tokenIdsZero);
@@ -4883,7 +4883,7 @@ describe("Staking", function () {
       // REWARD
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2).to.emit(stakingInstance, "DepositWithdraw").withArgs(1, owner.address, endTimestamp);
       await expect(tx2).to.changeEtherBalances([owner, stakingInstance], [amount / 2n, -amount / 2n]);
 
@@ -5000,7 +5000,7 @@ describe("Staking", function () {
       await erc1155Instance.setApprovalForAll(stakingInstance, true);
 
       const tx1 = await stakingInstance.deposit(params, [0, 0, 1, 1], { value: amount });
-      const startTimestamp: number = (await time.latest()).toNumber();
+      const startTimestamp: number = await time.latest();
       await expect(tx1)
         .to.emit(stakingInstance, "DepositStart")
         .withArgs(1, 1, owner.address, startTimestamp, [0, 0, 1, 1])
@@ -5023,12 +5023,12 @@ describe("Staking", function () {
 
       // TIME 1
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
 
       // REWARD
 
       const tx2 = await stakingInstance.receiveReward(1, true, true);
-      const endTimestamp: number = (await time.latest()).toNumber();
+      const endTimestamp: number = await time.latest();
       await expect(tx2)
         .to.emit(stakingInstance, "DepositReturn")
         .withArgs(1, owner.address)

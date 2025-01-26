@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 import { ZeroAddress } from "ethers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { amount } from "@ethberry/contracts-constants";
 
@@ -8,12 +8,7 @@ export async function deployVesting(name: string, cliffInMonth: number, monthlyR
   const [owner] = await ethers.getSigners();
   const current = await time.latest();
   const vestingFactory = await ethers.getContractFactory(name);
-  const vestingInstance: any = await vestingFactory.deploy(
-    owner.address,
-    current.toNumber(),
-    cliffInMonth,
-    monthlyRelease,
-  );
+  const vestingInstance: any = await vestingFactory.deploy(owner.address, current, cliffInMonth, monthlyRelease);
 
   await vestingInstance.topUp(
     [

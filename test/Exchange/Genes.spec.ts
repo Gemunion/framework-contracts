@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers, network } from "hardhat";
 import { Contract, encodeBytes32String, ZeroAddress } from "ethers";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { amount, MINTER_ROLE } from "@ethberry/contracts-constants";
 

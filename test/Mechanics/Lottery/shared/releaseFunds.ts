@@ -1,8 +1,7 @@
 import { expect } from "chai";
-import { ethers, network, web3 } from "hardhat";
+import { ethers, network } from "hardhat";
 import { ZeroAddress } from "ethers";
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { time } from "@openzeppelin/test-helpers";
+import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { MINTER_ROLE } from "@ethberry/contracts-constants";
 
@@ -128,7 +127,7 @@ export function shouldReleaseFunds(factory: () => Promise<any>) {
       await randomRequest(lotteryInstance, vrfInstance);
 
       const current = await time.latest();
-      await time.increaseTo(current.add(web3.utils.toBN(2592000)));
+      await time.increaseTo(current + 2592000);
 
       const tx = lotteryInstance.releaseFunds(1);
       await expect(tx).to.emit(lotteryInstance, "Released").withArgs(1, 31429);

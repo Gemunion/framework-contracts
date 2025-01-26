@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { ethers, web3 } from "hardhat";
+import { ethers } from "hardhat";
 import { parseEther, WeiPerEther, ZeroAddress } from "ethers";
 
-import { time } from "@openzeppelin/test-helpers";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { blockAwait } from "@ethberry/contracts-helpers";
 import { deployContract } from "@ethberry/contracts-utils";
 
@@ -349,7 +349,7 @@ describe("Ponzi", function () {
       expect(stakeBalance).to.equal(1000);
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
       // REWARD
       await ponziInstance.topUp(
         [
@@ -415,7 +415,7 @@ describe("Ponzi", function () {
       expect(stakeBalance).to.equal(1000);
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
       // REWARD
       await ponziInstance.topUp(
         [
@@ -470,7 +470,7 @@ describe("Ponzi", function () {
       expect(stakeBalance).to.equal(1000);
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
       // REWARD
       await ponziInstance.topUp(
         [
@@ -544,7 +544,7 @@ describe("Ponzi", function () {
       expect(stakeBalance).to.equal(1000);
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
       // REWARD
       await ponziInstance.topUp(
         [
@@ -616,7 +616,7 @@ describe("Ponzi", function () {
       expect(stakeBalance).to.equal(1000);
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
       // REWARD
       await erc20Instance.mint(ponziInstance, 100 * cycles);
       const balance1 = await erc20Instance.balanceOf(ponziInstance);
@@ -669,7 +669,7 @@ describe("Ponzi", function () {
       expect(balance2).to.equal(0);
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
       // REWARD
       await ponziInstance.topUp(
         [
@@ -735,7 +735,7 @@ describe("Ponzi", function () {
       expect(balance2).to.equal(0);
       // TIME
       const current = await time.latestBlock();
-      await time.advanceBlockTo(current.add(web3.utils.toBN(period * cycles)));
+      await time.advanceBlockTo(current + period * cycles);
       // REWARD
       await erc20Instance.mint(ponziInstance, 100 * cycles);
       const tx2 = await ponziInstance.receiveReward(1, true, true);
