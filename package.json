@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@chainlink/contracts": "1.3.0",
-    "@ethberry/constants": "0.13.6",
+    "@ethberry/constants": "0.13.7",
     "@ethberry/contracts-access": "5.0.53",
     "@ethberry/contracts-chain-link-v2-plus": "5.0.53",
     "@ethberry/contracts-constants": "5.0.53",
