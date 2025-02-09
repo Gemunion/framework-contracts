@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import { AbiCoder, Contract, keccak256, ZeroAddress } from "ethers";
 
 import { amount, nonce } from "@ethberry/contracts-constants";
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 import { deployDiamond, deployErc721Base, wrapOneToManyToManySignature } from "./shared";
 import { expiresAt, externalId, extra, tokenId } from "../constants";

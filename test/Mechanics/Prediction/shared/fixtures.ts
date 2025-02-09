@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 
 import { amount } from "@ethberry/contracts-constants";
-import { TokenType } from "@ethberry/types-blockchain";
+import { TokenType } from "@framework/types-blockchain";
 
 import { deployERC1363 } from "../../../ERC20/shared/fixtures";
 import { cap, tokenId, tokenZero, treasuryFee } from "../../../constants";

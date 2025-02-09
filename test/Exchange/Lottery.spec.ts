@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers, network } from "hardhat";
 import { Contract, encodeBytes32String, ZeroAddress, ZeroHash, toBeHex } from "ethers";
 
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 import { amount, MINTER_ROLE } from "@ethberry/contracts-constants";
 
 import { expiresAt, externalId, extra, tokenId } from "../constants";

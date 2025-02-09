@@ -6,7 +6,7 @@ import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { blockAwait } from "@ethberry/contracts-helpers";
 import { camelToSnakeCase } from "@ethberry/utils";
 import { METADATA_ROLE, MINTER_ROLE, nonce, royalty, wallet, wallets } from "@ethberry/contracts-constants";
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 import { getContractName } from "../test/utils";
 import { expiresAt, externalId } from "../test/constants";

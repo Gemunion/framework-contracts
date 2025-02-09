@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { ZeroAddress, toBeHex } from "ethers";
 
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 import { MINTER_ROLE } from "@ethberry/contracts-constants";
 
 import { getBytesNumbersArr, getNumbersBytes } from "../../../utils";

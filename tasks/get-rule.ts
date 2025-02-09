@@ -1,7 +1,7 @@
 import { task } from "hardhat/config";
 import { Result } from "ethers";
 
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 task("get-rule", "Prints a Staking rule")
   .addParam("staking", "The Staking address")

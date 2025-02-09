@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { Result, toBeHex, WeiPerEther, zeroPadValue, ZeroAddress } from "ethers";
 
 import { baseTokenURI, royalty } from "@ethberry/contracts-constants";
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 import { getContractName, chainIdToSuffix } from "../../test/utils";
 import { LinkTokenAddress, VrfCoordinatorV2PlusAddress } from "../utils/address";

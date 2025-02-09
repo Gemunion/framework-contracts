@@ -1,7 +1,7 @@
 import { task } from "hardhat/config";
 import { Result, WeiPerEther, zeroPadValue, toBeHex } from "ethers";
 
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 task("sub-fund", "Add VRF subscription")
   .addParam("vrf", "The VRF coordinator contract's address")

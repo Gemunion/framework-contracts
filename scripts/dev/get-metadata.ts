@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-// import { blockAwait } from "@ethberry/utils-eth";
+// import { blockAwait } from "@framework/utils-eth";
 import { baseTokenURI } from "@ethberry/contracts-constants";
 
 async function main() {

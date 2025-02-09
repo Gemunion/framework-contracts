@@ -12,8 +12,8 @@ import {
   zeroPadValue
 } from "ethers";
 
-import { patchBigInt } from "@ethberry/utils-eth";
-import { Networks } from "@ethberry/types-blockchain";
+import { patchBigInt } from "@framework/utils-eth";
+import { Networks } from "@framework/types-blockchain";
 
 patchBigInt();
 

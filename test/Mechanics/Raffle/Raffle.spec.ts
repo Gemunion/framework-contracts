@@ -6,7 +6,7 @@ import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 import { shouldBehaveLikePausable } from "@ethberry/contracts-utils";
 import { shouldBehaveLikeAccessControl } from "@ethberry/contracts-access";
 import { amount, DEFAULT_ADMIN_ROLE, MINTER_ROLE, nonce, PAUSER_ROLE } from "@ethberry/contracts-constants";
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 import { delay } from "@ethberry/utils";
 
 import { expiresAt, extra, tokenId } from "../../constants";

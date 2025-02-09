@@ -1,7 +1,7 @@
 import { task } from "hardhat/config";
 import { Result } from "ethers";
 
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 task("erc721-mint-common", "Mints ERC721 tokens")
   .addParam("contract", "The ERC721 contract's address")

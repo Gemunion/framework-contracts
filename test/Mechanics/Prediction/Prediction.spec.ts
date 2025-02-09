@@ -1,7 +1,7 @@
 import { shouldBehaveLikePausable, shouldSupportsInterface } from "@ethberry/contracts-utils";
 import { InterfaceId } from "@ethberry/contracts-constants";
 
-import { TokenType } from "@ethberry/types-blockchain";
+import { TokenType } from "@framework/types-blockchain";
 
 import { shouldBehaveLikePrediction } from "./shared/predictionBehavior";
 import { deployPredictionContract } from "./shared/fixtures";

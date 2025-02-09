@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { Result, toUtf8Bytes, zeroPadValue } from "ethers";
 
 import { baseTokenURI, royalty } from "@ethberry/contracts-constants";
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 async function main() {
   const [owner] = await ethers.getSigners();

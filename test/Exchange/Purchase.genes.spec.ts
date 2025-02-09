@@ -4,7 +4,7 @@ import { Contract, ZeroAddress, zeroPadBytes } from "ethers";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 import { amount, nonce } from "@ethberry/contracts-constants";
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 import { VRFCoordinatorV2PlusMock } from "../../typechain-types";
 import { deployLinkVrfFixture } from "../shared/link";

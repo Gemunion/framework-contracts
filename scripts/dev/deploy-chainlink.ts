@@ -1,7 +1,7 @@
 import { ethers, network } from "hardhat";
 import { Result, toBeHex, WeiPerEther, zeroPadValue } from "ethers";
 
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 // ChainLink V2Plus
 async function main() {

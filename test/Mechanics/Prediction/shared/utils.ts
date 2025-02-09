@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import { ContractTransactionResponse } from "ethers";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 
-import { TokenType } from "@ethberry/types-blockchain";
+import { TokenType } from "@framework/types-blockchain";
 
 export enum Position {
   LEFT,

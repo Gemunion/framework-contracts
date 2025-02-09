@@ -4,7 +4,7 @@ import { Contract, ZeroAddress, ZeroHash } from "ethers";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 import { amount, METADATA_ROLE, MINTER_ROLE, nonce } from "@ethberry/contracts-constants";
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 import { deployDiamond, deployErc20Base, deployErc721Base, wrapOneToManySignature } from "./shared";
 import { expiresAt, externalId, extra, params, tokenId } from "../constants";

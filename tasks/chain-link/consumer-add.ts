@@ -1,7 +1,7 @@
 import { task } from "hardhat/config";
 import { Result } from "ethers";
 
-import { recursivelyDecodeResult } from "@ethberry/utils-eth";
+import { recursivelyDecodeResult } from "@framework/utils-eth";
 
 task("consumer-add", "Add vRF subscription")
   .addParam("vrf", "The VRF coordinator contract's address")
